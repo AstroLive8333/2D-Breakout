@@ -26,6 +26,7 @@ var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var score = 0;
 var lives = 3;
+var level = 1;
 
 var bricks = [];
 for (var c = 0; c < brickColumnCount; c++) {
@@ -75,9 +76,11 @@ function collisionDetection() {
           dy = -dy;
           b.status = 0;
           score++;
-          if (score == brickRowCount * brickColumnCount) {
-            alert("YOU WIN, CONGRATS!");
+          if (score == brickRowCount * brickColumnCount * level) {
+                    doctype.innerHTML("<p1 id="result">You Lose</p1>");
+            //alert("YOU WIN, CONGRATS!");
             document.location.reload();
+            level ++;
           }
         }
       }
@@ -130,6 +133,11 @@ function drawLives() {
   ctx.fillStyle = "#0095DD";
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
+function drawLevel() {
+ctx.font = "16px Arial";
+ctx.fillStyle = "0095DD";
+ctx.fillText("Level: " + level, canvas.width - 65, 40);
+}
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -138,6 +146,7 @@ function draw() {
   drawPaddle();
   drawScore();
   drawLives();
+  drawLevel();
   collisionDetection();
 
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
@@ -151,8 +160,9 @@ function draw() {
     } else {
       lives--;
       if (!lives) {
-       // alert("GAME OVER");
+        doctype.innerHTML("<p1 id="result">You Lose</p1>");
         document.location.reload();
+        level --;
       } else {
         x = canvas.width / 2;
         y = canvas.height - 30;
